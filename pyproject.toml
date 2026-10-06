@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=68.0.0", "wheel>=0.40.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "append-only-bptree-storage-engine"
+version = "0.1.0"
+description = "A high-performance append-only B+Tree storage engine in Python with C/C++ extensions"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Database :: Database Engines/Servers",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-benchmark>=4.0.0",
+]
+
+[tool.setuptools]
+packages = ["append_only_bptree"]
+
+[tool.setuptools.cmdclass]
+# Custom command hooks to satisfy target requirements safely via setuptools/python
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = ["tests"]
+
+[tool.cibuildwheel]
+build = "cp38-* cp39-* cp310-* cp311-* cp312-*"
+archs = ["auto"]
+
+# Makefile fallback representation inside pyproject metadata or standard hooks
+# Since pure pyproject.toml doesn't execute shell tasks natively without build tools,
+# we define standard entry points and standard setuptools extension compilation below.
+
+[tool.setuptools.extension]
+# If there is a C/C++ extension, configure optimization flags here.
+# Example extension definition:
+# ext_modules = [{name = "append_only_bptree._core", sources = [...]}]
+extra_compile_args = ["-O3", "-Wall", "-Wextra", "-std=c++17"]
